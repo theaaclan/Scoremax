@@ -1,0 +1,69 @@
+.Container {
+    display: flex;
+    margin-top: 170px;
+}
+
+.Branch_1 {
+    height: 620px;
+    width: 450px;
+    flex-wrap: wrap;
+    display: flex;
+}
+
+.Branch_2 {
+    height: 300px;
+    width: 400px;
+    flex-wrap: wrap;
+    display: flex;
+    margin-top: 160px;
+}
+
+.Branch_3 {
+    height: 150px;
+    width: 400px;
+    flex-wrap: wrap;
+    display: flex;
+    margin-top: 240px;
+}
+
+.Object_1_even {
+    display: grid;
+    grid-template-columns: 230px 100px;
+    grid-template-rows: 50px 50px;
+    background-color: rgb(153, 153, 153);
+    width: 300px;
+    padding-top: 40px;
+    padding-left: 4px;
+}
+
+.Object_1_odd {
+    display: grid;
+    grid-template-columns: 230px 100px;
+    grid-template-rows: 50px 50px;
+    background-color: rgb(110, 110, 110);
+    width: 300px;
+    padding-top: 40px;
+    padding-left: 4px;
+}
+
+.Name {
+    width: 210px;
+    height: 40px;
+    font-size: 20px;
+    border-radius: 4px;
+}
+
+.select {
+    width: 40px;
+    height: 40px;
+    font-size: 20px;
+    border-radius: 4px;
+}
+
+.Match_02 {
+    height: 300px;
+}
+
+.Match_03 {
+    height: 600px;
+}

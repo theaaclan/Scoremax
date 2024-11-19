@@ -1,0 +1,120 @@
+/* Container styles */
+.scoreboard-container {
+    display: flex;
+    justify-content: center;
+    margin-top: 30px;
+    padding: 20px;
+}
+
+/* Scoreboard and tables layout */
+.scoreboard-and-tables {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 20px;
+    width: 100%;
+}
+
+/* Scoreboard left and right styles */
+.score-left,
+.score-right {
+    background-color: grey;
+    padding: 15px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    width: 15%;
+    text-align: center;
+    justify-content: center;
+}
+
+.score-left {
+    display: flex;
+    align-items: center;
+}
+
+/* Player boards */
+.player-board-left,
+.player-board-right {
+    flex: 1;
+    padding: 10px;
+}
+
+/* Timer container styles */
+.timer-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: -700px;
+}
+
+/* Timer button styles */
+.timer-button {
+    background-color: #4caf50;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    cursor: pointer;
+    font-size: 16px;
+    margin-right: 15px;
+    border-radius: 5px;
+}
+
+.timer-button-pause {
+    background-color: #f44336;
+}
+
+/* Timer text styles */
+.timer {
+    font-size: 24px;
+    font-weight: bold;
+    color: #333;
+}
+
+/* Dropdown container and select styles */
+.dropdown-container {
+    margin-bottom: 20px;
+}
+
+.select {
+    padding: 10px;
+    font-size: 16px;
+    border: 2px solid #ddd;
+    border-radius: 5px;
+    width: 100%;
+    background-color: #f9f9f9;
+}
+
+/* Score text style */
+.score-text {
+    font-size: 58px;
+    color: red;
+    font-weight: bold;
+}
+
+/* Players table styles */
+.players-table {
+    width: 100%;
+    margin: 20px 0;
+    border-collapse: collapse;
+}
+
+.players-table-header {
+    background-color: #f1f1f1;
+    font-weight: bold;
+}
+
+.players-table-cell {
+    padding: 10px;
+    border: 1px solid #ddd;
+    text-align: left;
+}
+
+/* Input field styles */
+.input {
+    width: 60px;
+    padding: 5px;
+    font-size: 16px;
+    text-align: center;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
