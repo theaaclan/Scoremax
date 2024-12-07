@@ -5,6 +5,7 @@ use App\Http\Controllers\Controller;
 
 use App\Models\BasketballTeam;
 use App\Models\BasketballMatchDetails;
+use App\Models\BasketballPlayers; // Assuming you have a BasketballPlayer model
 use Inertia\Inertia;
 use Illuminate\Http\Request;
 
@@ -12,12 +13,12 @@ class BasketballScoreboard extends Controller
 {
     public function index()
     {
-        $teams = BasketballTeam::all(); // Get all teams
-        $matchDetails = BasketballMatchDetails::with(['player', 'team'])->get(); // Include player and team details
+        $teams = BasketballTeam::all();  // Getting teams data
+        $basketballPlayers = BasketballPlayers::all(); // Getting all players data
 
         return Inertia::render('BasketballScoreboard', [
             'teams' => $teams,
-            'matchDetails' => $matchDetails,
+            'basketballPlayers' => $basketballPlayers
         ]);
     }
 
