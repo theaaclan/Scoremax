@@ -1,0 +1,540 @@
+import React, { useState, useEffect } from "react";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faGear } from "@fortawesome/free-solid-svg-icons";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import Swal from "sweetalert2";
+import { usePage } from "@inertiajs/react";
+import axios from "axios";
+import Navbar from "../../Layouts/Navbar";
+import "../../../css/scoreboard.css";
+import "@css/tailwind.css";
+
+const BasketballScoreboard = () => {
+    const { teams, basketballPlayers } = usePage().props;
+
+    // Load state from localStorage on mount
+    const loadStateFromLocalStorage = () => {
+        const savedState = localStorage.getItem("basketballScoreboardState");
+        return savedState ? JSON.parse(savedState) : null;
+    };
+
+    // Default state if no saved state is found
+    const defaultState = {
+        selectedTeams: { A: null, B: null },
+        scores: { A: 0, B: 0 },
+        timer: 720,
+        isRunning: false,
+        players: { A: [], B: [] },
+        period: 1,
+        editable: false,
+        timeouts: { A: 3, B: 3 },
+        mvp: "",
+    };
+
+    const initialState = loadStateFromLocalStorage() || defaultState;
+
+    const [selectedTeams, setSelectedTeams] = useState(
+        initialState.selectedTeams
+    );
+    const [scores, setScores] = useState(initialState.scores);
+    const [timer, setTimer] = useState(initialState.timer);
+    const [isRunning, setIsRunning] = useState(initialState.isRunning);
+    const [players, setPlayers] = useState(initialState.players);
+    const [period, setPeriod] = useState(initialState.period);
+    const [editable, setEditable] = useState(initialState.editable);
+    const [timeouts, setTimeouts] = useState(initialState.timeouts);
+    const [mvp, setMVP] = useState(initialState.mvp);
+    const [loading, setLoading] = useState(false);
+    const [buttonsVisible, setButtonsVisible] = useState(false);
+
+    const toggleButtonsVisibility = () => {
+        setButtonsVisible((prevState) => !prevState);
+    };
+
+    // Timer logic
+    useEffect(() => {
+        if (isRunning) {
+            const interval = setInterval(() => {
+                setTimer((prev) => {
+                    if (prev === 0) {
+                        if (period < 4) {
+                            setPeriod((prevPeriod) => prevPeriod + 1);
+                            setIsRunning(false);
+                            return 720;
+                        }
+                        clearInterval(interval);
+                        return prev;
+                    }
+                    return prev - 1;
+                });
+            }, 1000);
+            return () => clearInterval(interval);
+        }
+    }, [isRunning, period]);
+
+    useEffect(() => {
+        if (period === 3) {
+            setTimeouts({ A: 3, B: 3 });
+        }
+    }, [period]);
+
+    useEffect(() => {
+        // Save state to localStorage whenever state changes
+        const currentState = {
+            selectedTeams,
+            scores,
+            timer,
+            isRunning,
+            players,
+            period,
+            editable,
+            timeouts,
+            mvp,
+        };
+        localStorage.setItem(
+            "basketballScoreboardState",
+            JSON.stringify(currentState)
+        );
+    }, [
+        selectedTeams,
+        scores,
+        timer,
+        isRunning,
+        players,
+        period,
+        editable,
+        timeouts,
+        mvp,
+    ]);
+
+    const formatTime = (seconds) =>
+        `${Math.floor(seconds / 60)
+            .toString()
+            .padStart(2, "0")}:${(seconds % 60).toString().padStart(2, "0")}`;
+
+    const getPlayersByTeam = (teamId) =>
+        basketballPlayers
+            ?.filter((player) => player.TeamID === parseInt(teamId))
+            .map((player) => ({
+                ...player,
+                points: 0,
+                assists: 0,
+                rebounds: 0,
+                blocks: 0,
+                fouls: 0,
+            }));
+
+    const handleTeamChange = (teamKey, teamId) => {
+        setSelectedTeams((prev) => ({ ...prev, [teamKey]: teamId }));
+        setPlayers((prev) => ({
+            ...prev,
+            [teamKey]: getPlayersByTeam(teamId),
+        }));
+    };
+
+    const handleStatChange = (teamKey, playerId, stat, change) => {
+        setPlayers((prev) => {
+            const updatedPlayers = prev[teamKey].map((player) =>
+                player.PlayerID === playerId
+                    ? { ...player, [stat]: Math.max(0, player[stat] + change) }
+                    : player
+            );
+
+            const updatedScore =
+                stat === "points"
+                    ? updatedPlayers.reduce(
+                          (sum, player) => sum + player.points,
+                          0
+                      )
+                    : scores[teamKey];
+
+            setScores((prevScores) => ({
+                ...prevScores,
+                [teamKey]: updatedScore,
+            }));
+
+            return { ...prev, [teamKey]: updatedPlayers };
+        });
+    };
+
+    const handleTimeChange = (e) => {
+        const value = e.target.value;
+        const [minutes, seconds] = value.split(":").map((num) => parseInt(num));
+        if (
+            !isNaN(minutes) &&
+            !isNaN(seconds) &&
+            minutes >= 0 &&
+            seconds >= 0 &&
+            seconds < 60
+        ) {
+            setTimer(minutes * 60 + seconds);
+        }
+    };
+
+    const handleTimeClick = () => {
+        if (!isRunning) {
+            setEditable(true);
+        }
+    };
+
+    const handleTimeBlur = () => {
+        setEditable(false);
+    };
+
+    const handleTimeoutClick = (teamKey) => {
+        setTimeouts((prev) => {
+            const remainingTimeouts = prev[teamKey] > 0 ? prev[teamKey] - 1 : 0;
+            return { ...prev, [teamKey]: remainingTimeouts };
+        });
+    };
+
+    const calculateMVP = () => {
+        // Combine all players from both teams
+        const allPlayers = [...players.A, ...players.B];
+
+        // Check if there are players available
+        if (allPlayers.length === 0) return "No players available";
+
+        // Calculate MVP by summing the relevant stats (points, assists, rebounds, blocks)
+        const mvp = allPlayers.reduce((bestPlayer, currentPlayer) => {
+            const currentTotal =
+                currentPlayer.points +
+                currentPlayer.assists +
+                currentPlayer.rebounds +
+                currentPlayer.blocks;
+
+            const bestTotal =
+                bestPlayer.points +
+                bestPlayer.assists +
+                bestPlayer.rebounds +
+                bestPlayer.blocks;
+
+            return currentTotal > bestTotal ? currentPlayer : bestPlayer;
+        });
+
+        return mvp.FullName;
+    };
+
+    const handleSubmitMatchDetailsAndScore = async () => {
+        setLoading(true);
+        try {
+            // Validate player data
+            const allPlayers = [...players.A, ...players.B];
+            if (
+                allPlayers.some(
+                    (player) =>
+                        player.points == null ||
+                        player.assists == null ||
+                        player.rebounds == null ||
+                        player.blocks == null ||
+                        player.fouls == null
+                )
+            ) {
+                Swal.fire({
+                    icon: "error",
+                    title: "Missing Information",
+                    text: "Please enter all player statistics before submitting.",
+                });
+                return;
+            }
+
+            // Validate team scores
+            if (!scores.A || !scores.B) {
+                Swal.fire({
+                    icon: "error",
+                    title: "Scores Missing",
+                    text: "Please enter both team scores before submitting.",
+                });
+                return;
+            }
+
+            // Determine the game winner
+            let gameWinner;
+            if (scores.A > scores.B) {
+                gameWinner = teams.find(
+                    (team) => team.TeamID === parseInt(selectedTeams.A)
+                )?.TeamName;
+            } else if (scores.B > scores.A) {
+                gameWinner = teams.find(
+                    (team) => team.TeamID === parseInt(selectedTeams.B)
+                )?.TeamName;
+            } else {
+                gameWinner = "Draw"; // Handle tie scenarios
+            }
+
+            // Prepare match details
+            const matchDetails = allPlayers.map((player) => ({
+                team_id: player.TeamID,
+                player_id: player.PlayerID,
+                points: player.points,
+                assists: player.assists,
+                rebounds: player.rebounds,
+                blocks: player.blocks,
+                fouls: player.fouls,
+            }));
+
+            // Prepare match score
+            const team1 = teams.find(
+                (team) => team.TeamID === parseInt(selectedTeams.A)
+            );
+            const team2 = teams.find(
+                (team) => team.TeamID === parseInt(selectedTeams.B)
+            );
+
+            // Submit match details
+            await axios.post("http://127.0.0.1:8000/basketballmatchdetails", {
+                match_details: matchDetails,
+            });
+
+            // Submit match score with the game winner
+            await axios.post("http://127.0.0.1:8000/basketballmatchscore", {
+                team1_name: team1.TeamName,
+                team2_name: team2.TeamName,
+                team1_score: scores.A,
+                team2_score: scores.B,
+                game_winner: gameWinner, // Include the game winner
+            });
+
+            // Single success notification
+            Swal.fire({
+                icon: "success",
+                title: "Success!",
+                text: "Match details and scores submitted successfully!",
+                timer: 3000,
+                showConfirmButton: false,
+            });
+        } catch (error) {
+            console.error(
+                "Error submitting match details or scores:",
+                error.response?.data
+            );
+            Swal.fire({
+                icon: "error",
+                title: "Submission Failed",
+                text: `Failed to submit match details or scores. ${
+                    error.response?.data?.message ||
+                    "Please check the console for more details."
+                }`,
+            });
+        } finally {
+            setLoading(false);
+        }
+    };
+
+    const clearState = () => {
+        Swal.fire({
+            title: "Are you sure?",
+            text: "This will clear the scoreboard!",
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonText: "Yes, clear it!",
+            cancelButtonText: "Cancel",
+        }).then((result) => {
+            if (result.isConfirmed) {
+                setSelectedTeams(defaultState.selectedTeams);
+                setScores(defaultState.scores);
+                setTimer(defaultState.timer);
+                setIsRunning(defaultState.isRunning);
+                setPlayers(defaultState.players);
+                setPeriod(defaultState.period);
+                setEditable(defaultState.editable);
+                setTimeouts(defaultState.timeouts);
+                setMVP(defaultState.mvp);
+
+                // Also clear the localStorage
+                localStorage.removeItem("basketballScoreboardState");
+
+                Swal.fire({
+                    icon: "success",
+                    title: "Cleared!",
+                    text: "Scoreboard has been cleared successfully.",
+                });
+            }
+        });
+    };
+
+    const renderPlayerTable = (teamKey) => {
+        const teamId = selectedTeams[teamKey];
+        const teamName = teams.find(
+            (team) => team.TeamID === parseInt(teamId)
+        )?.TeamName;
+        const teamPlayers = players[teamKey];
+
+        const tableClass =
+            teamKey === "A" ? "player-board-left" : "player-board-right";
+
+        return (
+            teamId && (
+                <div className={tableClass}>
+                    <h2 className="text-center">{teamName} Players</h2>
+                    <table className="players-table">
+                        <thead>
+                            <tr>
+                                {[
+                                    "Player Name",
+                                    "Points",
+                                    "Assists",
+                                    "Rebounds",
+                                    "Blocks",
+                                    "Fouls",
+                                ].map((header) => (
+                                    <th
+                                        className="players-table-cell"
+                                        key={header}
+                                    >
+                                        {header}
+                                    </th>
+                                ))}
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {teamPlayers.map((player) => (
+                                <tr key={player.PlayerID}>
+                                    <td className="players-table-cell">
+                                        {player.FullName}
+                                    </td>
+                                    {[
+                                        "points",
+                                        "assists",
+                                        "rebounds",
+                                        "blocks",
+                                        "fouls",
+                                    ].map((stat) => (
+                                        <td
+                                            className="players-table-cell"
+                                            key={stat}
+                                        >
+                                            <div className="button-counter">
+                                                <span>{player[stat]}</span>
+                                            </div>
+                                        </td>
+                                    ))}
+                                </tr>
+                            ))}
+                        </tbody>
+                    </table>
+                </div>
+            )
+        );
+    };
+
+    return (
+        <div>
+            <Navbar />
+            <div className="scoreboard-container flex flex-col md:flex-row justify-between items-center">
+                <div className="scoreboard">
+                    <div className="scoreboard-scores">
+                        <div className="score-left">
+                            <div className="dropdown-container  pointer-events-none">
+                                <select
+                                    className="select"
+                                    onChange={(e) =>
+                                        handleTeamChange("A", e.target.value)
+                                    }
+                                    value={selectedTeams.A || ""}
+                                >
+                                    <option value="" disabled>
+                                        TBA
+                                    </option>
+                                    {teams.map((team) => (
+                                        <option
+                                            key={team.TeamID}
+                                            value={team.TeamID}
+                                        >
+                                            {team.TeamName}
+                                        </option>
+                                    ))}
+                                </select>
+                                <h3 className="score-text">{scores.A}</h3>
+                            </div>
+                        </div>
+                        <div className="period-container">
+                            <div className="period-box">Period: {period}</div>
+                        </div>
+                        <div className="score-right">
+                            <div className="dropdown-container  pointer-events-none">
+                                <select
+                                    className="select"
+                                    onChange={(e) =>
+                                        handleTeamChange("B", e.target.value)
+                                    }
+                                    value={selectedTeams.B || ""}
+                                >
+                                    <option value="" disabled>
+                                        TBA
+                                    </option>
+                                    {teams.map((team) => (
+                                        <option
+                                            key={team.TeamID}
+                                            value={team.TeamID}
+                                        >
+                                            {team.TeamName}
+                                        </option>
+                                    ))}
+                                </select>
+                                <h3 className="score-text">{scores.B}</h3>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div className="timer-container  pointer-events-none">
+                    {editable ? (
+                        <input
+                            type="text"
+                            className="timer timer-edit-input"
+                            value={formatTime(timer)}
+                            onChange={handleTimeChange}
+                            onBlur={handleTimeBlur}
+                            autoFocus
+                        />
+                    ) : (
+                        <span className="timer" onClick={handleTimeClick}>
+                            {formatTime(timer)}
+                        </span>
+                    )}
+                </div>
+
+                <div className="timeoutA">
+                    <button
+                        className={`timeout-button px-4 py-2 rounded-lg text-white font-bold text-lg 
+        ${
+            timeouts.A === 0
+                ? "bg-gray-400 cursor-not-allowed  pointer-events-none"
+                : "bg-red-500 hover:bg-red-700 active:bg-red-800  pointer-events-none"
+        }`}
+                        onClick={() => handleTimeoutClick("A")}
+                        disabled={timeouts.A === 0}
+                    >
+                        Timeout: {timeouts.A}
+                    </button>
+                </div>
+
+                <div className="timeoutB">
+                    <button
+                        className={`timeout-button px-4 py-2 rounded-lg text-white font-bold text-lg 
+        ${
+            timeouts.B === 0
+                ? "bg-gray-400 cursor-not-allowed"
+                : "bg-red-500 hover:bg-red-700 active:bg-red-800  pointer-events-none"
+        }`}
+                        onClick={() => handleTimeoutClick("B")}
+                        disabled={timeouts.B === 0}
+                    >
+                        Timeout: {timeouts.B}
+                    </button>
+                </div>
+
+                {/* Player Tables Section */}
+                <div className="player-tables-section">
+                    {renderPlayerTable("A")}
+                    {renderPlayerTable("B")}
+                </div>
+            </div>
+            <ToastContainer />
+        </div>
+    );
+};
+
+export default BasketballScoreboard;

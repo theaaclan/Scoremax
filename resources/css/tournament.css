@@ -1,0 +1,178 @@
+.Container {
+    position: absolute;
+    display: flex;
+    margin-top: -70px;
+    margin-left: 120px;
+    background-color: white;
+}
+
+/* Title Styles */
+.Title {
+    font-size: 32px; /* Default size for larger screens */
+    font-weight: bold;
+    margin: 20px;
+    background-color: white;
+}
+.Titles {
+    font-size: 32px; /* Default size for larger screens */
+    font-weight: bold;
+    margin: 20px;
+    background-color: black;
+}
+
+/* Branch 1 Styles */
+.Branch_1 {
+    height: 620px;
+    width: 450px;
+    flex-wrap: wrap;
+    display: flex;
+}
+
+/* Branch 2 Styles */
+.Branch_2 {
+    height: 300px;
+    width: 400px;
+    flex-wrap: wrap;
+    display: flex;
+    margin-top: 160px;
+}
+
+/* Branch 3 Styles */
+.Branch_3 {
+    height: 150px;
+    width: 400px;
+    flex-wrap: wrap;
+    display: flex;
+    margin-top: 240px;
+}
+
+/* Branch 4 Styles */
+.Branch_4 {
+    height: 150px;
+    width: 400px;
+    flex-wrap: wrap;
+    display: flex;
+    margin-top: 275px;
+}
+
+/* Object 1 Even Styles */
+.Object_1_even {
+    display: grid;
+    grid-template-columns: 230px 100px;
+    grid-template-rows: 50px 50px;
+    background-color: rgb(153, 153, 153);
+    width: 300px;
+    padding-top: 30px;
+    padding-bottom: 25px;
+    padding-left: 4px;
+    border: 2px solid red;
+    margin-top: 30px;
+}
+
+/* Object 1 Odd Styles */
+.Object_1_odd {
+    position: relative;
+    display: grid;
+    grid-template-columns: 230px 100px;
+    grid-template-rows: 50px 50px;
+    background-color: rgb(153, 153, 153);
+    width: 300px;
+    padding-top: 40px;
+    padding-left: 4px;
+    border: 2px solid red;
+}
+
+/* Name Input Styles */
+.Name {
+    width: 210px;
+    height: 40px;
+    font-size: 20px;
+    border-radius: 4px;
+    background-color: white;
+}
+
+/* Button Styles */
+.Button {
+    padding: 5px 20px;
+    background-color: red;
+    color: white;
+    border: none;
+    cursor: pointer;
+    border-radius: 4px;
+    margin: 5px;
+}
+
+/* Clear Button Styles */
+.ClearButton {
+    padding: 10px 20px;
+    background-color: #f44336;
+    color: white;
+    border: none;
+    cursor: pointer;
+    border-radius: 4px;
+    margin: 5px;
+    position: relative;
+    top: -70px;
+    left: 10px;
+}
+
+@media (max-width: 768px) {
+    .Container {
+        transform: scale(0.5); /* Scale down the container */
+        margin-left: -400px;
+    }
+
+    .Titles {
+        font-size: 24px; /* Adjust font size for smaller screens */
+    }
+
+    .Branch_4 {
+        bottom: -90px;
+    }
+
+    .Object_1_even,
+    .Object_1_odd {
+        transform: scale(0.9); /* Scale down objects */
+    }
+
+    .Button {
+        transform: scale(0.9); /* Scale down the button */
+    }
+
+    .ClearButton {
+        margin-top: 90px;
+        transform: scale(0.7); /* Scale down the clear button */
+    }
+}
+
+/* Media Query for very small screens */
+@media (max-width: 480px) {
+    .Container {
+        margin-top: -90px;
+        transform: scale(0.7); /* Further scale down for very small screens */
+    }
+
+    .Title {
+        font-size: 20px; /* Adjust font size */
+    }
+
+    .Branch_1,
+    .Branch_2,
+    .Branch_3,
+    .Branch_4 {
+        transform: scale(0.8); /* Further scale down branches */
+    }
+
+    .Object_1_even,
+    .Object_1_odd {
+        transform: scale(0.8); /* Further scale down objects */
+    }
+
+    .Button {
+        transform: scale(0.8); /* Further scale down the button */
+    }
+
+    .ClearButton {
+        transform: scale(0.8); /* Further scale down the clear button */
+    }
+}

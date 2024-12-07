@@ -3,6 +3,7 @@ import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
 import PieChart from "../Components/PieChart";
 import { Head, usePage } from "@inertiajs/react";
 import "@css/tailwind.css";
+import LeagueForm from "./League";
 
 export default function Dashboard() {
     const { stats } = usePage().props; // Assuming stats is passed from the backend
@@ -61,15 +62,15 @@ export default function Dashboard() {
     return (
         <AuthenticatedLayout>
             <Head title="Dashboard" />
-            <div className="flex">
-                {/* Sidebar Component */}
 
+            <div className="flex">
                 {/* Main Content */}
+
                 <div className="w-full p-6">
                     <h1 className="relative text-2xl font-semibold mb-6 text-center">
                         Dashboard
                     </h1>
-
+                    <LeagueForm />
                     {/* Responsive flex layout for two Pie Charts */}
                     <div className="flex flex-col lg:flex-row gap-8 justify-center items-center">
                         {/* Player Stats Chart */}

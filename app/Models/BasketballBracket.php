@@ -10,8 +10,12 @@ class BasketballBracket extends Model
     use HasFactory;
 
     protected $fillable = [
-        'Team1ID', 'Team2ID', 'WinnerID', 'Round', 'user_id'
+        'Team1ID', 'Team2ID', 'WinnerID', 'Round', 'user_id', 'LeagueID'
     ];
+    public function league()
+    {
+        return $this->belongsTo(League::class, 'LeagueID');
+    }
 
     public function team1()
     {

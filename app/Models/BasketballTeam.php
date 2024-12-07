@@ -9,35 +9,34 @@ class BasketballTeam extends Model
 {
     use HasFactory;
 
-    protected $table = 'basketballteams';
     protected $primaryKey = 'TeamID';
-
+    protected $table = 'basketballteams';
     protected $fillable = [
         'TeamName',
         'CoachName',
         'PlayerCount',
-        'user_id',  // Foreign key column
+        'user_id',
+        'LeagueID'
+      
     ];
+    public function league()
+    {
+        return $this->belongsTo(League::class, 'LeagueID');
+    }
+    // Relationship with User
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
 
-    // Define relationship with User
-    // app/Models/BasketballTeam.php
-
-public function user()
+    // Relationship with Basketball Players
+    public function players()
 {
-    return $this->belongsTo(User::class, 'user_id');
+    return $this->hasMany(BasketballPlayers::class, 'TeamID', 'TeamID');
 }
-
-public function players()
+public function BasketballmatchDetails()
 {
-    return $this->hasMany(BasketballPlayers::class, 'TeamID');
+    return $this->hasMany(BasketballMatchDetails::class, 'TeamID', 'TeamID');
 }
-public function basketballPlayers()
-{
-    return $this->hasMany(BasketballPlayers::class,'team_id', 'TeamID');
-}
-
-
-
     
 }
-

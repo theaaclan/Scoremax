@@ -7,13 +7,18 @@ import { useState } from "react";
 import "@css/tailwind.css";
 
 export default function AuthenticatedLayout({ header, children }) {
+    const [showPlayers, setShowPlayers] = useState(false);
+    const [showTeams, setShowTeams] = useState(false);
+    const [showBracket, setShowBracket] = useState(false);
+    const [showSchedule, setShowSchedule] = useState(false);
+    const [showScoreboard, setShowScoreboard] = useState(false);
     const user = usePage().props.auth.user;
     const [showingNavigationDropdown, setShowingNavigationDropdown] =
         useState(false);
 
     return (
-        <div className="min-h-screen bg-gray-100">
-            <nav className="border-b border-gray-100 bg-white">
+        <div>
+            <nav className="border-b border-blue-100 bg-white">
                 <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
                     <div className="flex h-16 justify-between">
                         <div className="flex">
@@ -59,16 +64,24 @@ export default function AuthenticatedLayout({ header, children }) {
                                                 >
                                                     Basketball
                                                 </Dropdown.Link>
-                                                <Dropdown.Link href={"#"}>
+                                                <Dropdown.Link
+                                                    href={"/volleyballplayers"}
+                                                >
                                                     Volleyball
                                                 </Dropdown.Link>
-                                                <Dropdown.Link href={"#"}>
+                                                <Dropdown.Link
+                                                    href={"baseballplayers"}
+                                                >
                                                     Baseball
                                                 </Dropdown.Link>
-                                                <Dropdown.Link href={"#"}>
+                                                <Dropdown.Link
+                                                    href={"sepaktakrawplayers"}
+                                                >
                                                     Sepak Takraw
                                                 </Dropdown.Link>
-                                                <Dropdown.Link href={"#"}>
+                                                <Dropdown.Link
+                                                    href={"footballplayers"}
+                                                >
                                                     Football
                                                 </Dropdown.Link>
                                             </Dropdown.Content>
@@ -103,16 +116,24 @@ export default function AuthenticatedLayout({ header, children }) {
                                                 >
                                                     Basketball
                                                 </Dropdown.Link>
-                                                <Dropdown.Link href={"#"}>
+                                                <Dropdown.Link
+                                                    href={"/volleyballteams"}
+                                                >
                                                     Volleyball
                                                 </Dropdown.Link>
-                                                <Dropdown.Link href={"#"}>
+                                                <Dropdown.Link
+                                                    href={"/baseballteams"}
+                                                >
                                                     Baseball
                                                 </Dropdown.Link>
-                                                <Dropdown.Link href={"#"}>
+                                                <Dropdown.Link
+                                                    href={"/sepaktakrawteams"}
+                                                >
                                                     Sepak Takraw
                                                 </Dropdown.Link>
-                                                <Dropdown.Link href={"#"}>
+                                                <Dropdown.Link
+                                                    href={"footballteams"}
+                                                >
                                                     Football
                                                 </Dropdown.Link>
                                             </Dropdown.Content>
@@ -146,16 +167,24 @@ export default function AuthenticatedLayout({ header, children }) {
                                                 >
                                                     Basketball
                                                 </Dropdown.Link>
-                                                <Dropdown.Link href={"#"}>
+                                                <Dropdown.Link
+                                                    href={"volleyballbracket"}
+                                                >
                                                     Volleyball
                                                 </Dropdown.Link>
-                                                <Dropdown.Link href={"#"}>
+                                                <Dropdown.Link
+                                                    href={"baseballbracket"}
+                                                >
                                                     Baseball
                                                 </Dropdown.Link>
-                                                <Dropdown.Link href={"#"}>
+                                                <Dropdown.Link
+                                                    href={"sepaktakrawbracket"}
+                                                >
                                                     Sepak Takraw
                                                 </Dropdown.Link>
-                                                <Dropdown.Link href={"#"}>
+                                                <Dropdown.Link
+                                                    href={"footballbracket"}
+                                                >
                                                     Football
                                                 </Dropdown.Link>
                                             </Dropdown.Content>
@@ -190,16 +219,24 @@ export default function AuthenticatedLayout({ header, children }) {
                                                 >
                                                     Basketball
                                                 </Dropdown.Link>
-                                                <Dropdown.Link href={"#"}>
+                                                <Dropdown.Link
+                                                    href={"volleyballschedule"}
+                                                >
                                                     Volleyball
                                                 </Dropdown.Link>
-                                                <Dropdown.Link href={"#"}>
+                                                <Dropdown.Link
+                                                    href={"baseballschedule"}
+                                                >
                                                     Baseball
                                                 </Dropdown.Link>
-                                                <Dropdown.Link href={"#"}>
+                                                <Dropdown.Link
+                                                    href={"sepaktakrawschedule"}
+                                                >
                                                     Sepak Takraw
                                                 </Dropdown.Link>
-                                                <Dropdown.Link href={"#"}>
+                                                <Dropdown.Link
+                                                    href={"footballschedule"}
+                                                >
                                                     Football
                                                 </Dropdown.Link>
                                             </Dropdown.Content>
@@ -236,16 +273,28 @@ export default function AuthenticatedLayout({ header, children }) {
                                                 >
                                                     Basketball
                                                 </Dropdown.Link>
-                                                <Dropdown.Link href={"#"}>
+                                                <Dropdown.Link
+                                                    href={
+                                                        "/volleyballscoreboard"
+                                                    }
+                                                >
                                                     Volleyball
                                                 </Dropdown.Link>
-                                                <Dropdown.Link href={"#"}>
+                                                <Dropdown.Link
+                                                    href={"baseballscoreboard"}
+                                                >
                                                     Baseball
                                                 </Dropdown.Link>
-                                                <Dropdown.Link href={"#"}>
+                                                <Dropdown.Link
+                                                    href={
+                                                        "sepaktakrawscoreboard"
+                                                    }
+                                                >
                                                     Sepak Takraw
                                                 </Dropdown.Link>
-                                                <Dropdown.Link href={"#"}>
+                                                <Dropdown.Link
+                                                    href={"footballscoreboard"}
+                                                >
                                                     Football
                                                 </Dropdown.Link>
                                             </Dropdown.Content>
@@ -254,6 +303,7 @@ export default function AuthenticatedLayout({ header, children }) {
                                 </div>
                             </div>
                         </div>
+                        <div className="flex items-center gap-6"></div>
 
                         <div className="hidden sm:ms-6 sm:flex sm:items-center">
                             <div className="relative ms-3">
@@ -342,12 +392,8 @@ export default function AuthenticatedLayout({ header, children }) {
                     </div>
                 </div>
 
-                <div
-                    className={
-                        (showingNavigationDropdown ? "block" : "hidden") +
-                        " sm:hidden"
-                    }
-                >
+                <div className={showingNavigationDropdown ? "block" : "hidden"}>
+                    {/* Dashboard Link */}
                     <div className="space-y-1 pb-3 pt-2">
                         <ResponsiveNavLink
                             href={route("dashboard")}
@@ -356,165 +402,153 @@ export default function AuthenticatedLayout({ header, children }) {
                             Dashboard
                         </ResponsiveNavLink>
                     </div>
+
+                    {/* Players Dropdown */}
                     <div className="space-y-1 pb-3 pt-2">
-                        <ResponsiveNavLink href={"#"}>
+                        <div
+                            onClick={() => setShowPlayers(!showPlayers)}
+                            className="cursor-pointer flex w-full items-start border-l-4 py-2 pe-4 ps-3"
+                        >
                             Players
-                        </ResponsiveNavLink>
-                        <div className="px-4">
-                            <div className="text-base font-medium text-gray-800">
-                                <ResponsiveNavLink href={"#"}>
+                        </div>
+                        {showPlayers && (
+                            <div className="px-4 space-y-1">
+                                <ResponsiveNavLink href="basketballplayers">
                                     Basketball
                                 </ResponsiveNavLink>
-                            </div>
-                            <div className="text-sm font-medium text-gray-500">
-                                <ResponsiveNavLink href={"#"}>
+                                <ResponsiveNavLink href="volleyballplayers">
                                     Volleyball
                                 </ResponsiveNavLink>
-                            </div>
-                            <div className="text-sm font-medium text-gray-500">
-                                <ResponsiveNavLink href={"#"}>
+                                <ResponsiveNavLink href="baseballplayers">
                                     Baseball
                                 </ResponsiveNavLink>
-                            </div>
-                            <div className="text-sm font-medium text-gray-500">
-                                <ResponsiveNavLink href={"#"}>
+                                <ResponsiveNavLink href="sepaktakrawplayers">
                                     Sepak Takraw
                                 </ResponsiveNavLink>
-                            </div>
-                            <div className="text-sm font-medium text-gray-500">
-                                <ResponsiveNavLink href={"#"}>
+                                <ResponsiveNavLink href="footballplayers">
                                     Football
                                 </ResponsiveNavLink>
                             </div>
-                        </div>
-                    </div>
-                    <div className="space-y-1 pb-3 pt-2">
-                        <ResponsiveNavLink href={"#"}>Teams</ResponsiveNavLink>
-                        <div className="px-4">
-                            <div className="text-base font-medium text-gray-800">
-                                <ResponsiveNavLink href={"#"}>
-                                    Basketball
-                                </ResponsiveNavLink>
-                            </div>
-                            <div className="text-sm font-medium text-gray-500">
-                                <ResponsiveNavLink href={"#"}>
-                                    Volleyball
-                                </ResponsiveNavLink>
-                            </div>
-                            <div className="text-sm font-medium text-gray-500">
-                                <ResponsiveNavLink href={"#"}>
-                                    Baseball
-                                </ResponsiveNavLink>
-                            </div>
-                            <div className="text-sm font-medium text-gray-500">
-                                <ResponsiveNavLink href={"#"}>
-                                    Sepak Takraw
-                                </ResponsiveNavLink>
-                            </div>
-                            <div className="text-sm font-medium text-gray-500">
-                                <ResponsiveNavLink href={"#"}>
-                                    Football
-                                </ResponsiveNavLink>
-                            </div>
-                        </div>
-                    </div>
-                    <div className="space-y-1 pb-3 pt-2">
-                        <ResponsiveNavLink href={"#"}>
-                            Bracket
-                        </ResponsiveNavLink>
-                        <div className="px-4">
-                            <div className="text-base font-medium text-gray-800">
-                                <ResponsiveNavLink href={"#"}>
-                                    Basketball
-                                </ResponsiveNavLink>
-                            </div>
-                            <div className="text-sm font-medium text-gray-500">
-                                <ResponsiveNavLink href={"#"}>
-                                    Volleyball
-                                </ResponsiveNavLink>
-                            </div>
-                            <div className="text-sm font-medium text-gray-500">
-                                <ResponsiveNavLink href={"#"}>
-                                    Baseball
-                                </ResponsiveNavLink>
-                            </div>
-                            <div className="text-sm font-medium text-gray-500">
-                                <ResponsiveNavLink href={"#"}>
-                                    Sepak Takraw
-                                </ResponsiveNavLink>
-                            </div>
-                            <div className="text-sm font-medium text-gray-500">
-                                <ResponsiveNavLink href={"#"}>
-                                    Football
-                                </ResponsiveNavLink>
-                            </div>
-                        </div>
-                    </div>
-                    <div className="space-y-1 pb-3 pt-2">
-                        <ResponsiveNavLink href={"#"}>
-                            Schedule
-                        </ResponsiveNavLink>
-                        <div className="px-4">
-                            <div className="text-base font-medium text-gray-800">
-                                <ResponsiveNavLink href={"#"}>
-                                    Basketball
-                                </ResponsiveNavLink>
-                            </div>
-                            <div className="text-sm font-medium text-gray-500">
-                                <ResponsiveNavLink href={"#"}>
-                                    Volleyball
-                                </ResponsiveNavLink>
-                            </div>
-                            <div className="text-sm font-medium text-gray-500">
-                                <ResponsiveNavLink href={"#"}>
-                                    Baseball
-                                </ResponsiveNavLink>
-                            </div>
-                            <div className="text-sm font-medium text-gray-500">
-                                <ResponsiveNavLink href={"#"}>
-                                    Sepak Takraw
-                                </ResponsiveNavLink>
-                            </div>
-                            <div className="text-sm font-medium text-gray-500">
-                                <ResponsiveNavLink href={"#"}>
-                                    Football
-                                </ResponsiveNavLink>
-                            </div>
-                        </div>
-                    </div>
-                    <div className="space-y-1 pb-3 pt-2">
-                        <ResponsiveNavLink href={"#"}>
-                            Scoreboard
-                        </ResponsiveNavLink>
-                        <div className="px-4">
-                            <div className="text-base font-medium text-gray-800">
-                                <ResponsiveNavLink href={"#"}>
-                                    Basketball
-                                </ResponsiveNavLink>
-                            </div>
-                            <div className="text-sm font-medium text-gray-500">
-                                <ResponsiveNavLink href={"#"}>
-                                    Volleyball
-                                </ResponsiveNavLink>
-                            </div>
-                            <div className="text-sm font-medium text-gray-500">
-                                <ResponsiveNavLink href={"#"}>
-                                    Baseball
-                                </ResponsiveNavLink>
-                            </div>
-                            <div className="text-sm font-medium text-gray-500">
-                                <ResponsiveNavLink href={"#"}>
-                                    Sepak Takraw
-                                </ResponsiveNavLink>
-                            </div>
-                            <div className="text-sm font-medium text-gray-500">
-                                <ResponsiveNavLink href={"#"}>
-                                    Football
-                                </ResponsiveNavLink>
-                            </div>
-                        </div>
+                        )}
                     </div>
 
+                    {/* Teams Dropdown */}
+                    <div className="space-y-1 pb-3 pt-2">
+                        <div
+                            onClick={() => setShowTeams(!showTeams)}
+                            className="cursor-pointer flex w-full items-start border-l-4 py-2 pe-4 ps-3"
+                        >
+                            Teams
+                        </div>
+                        {showTeams && (
+                            <div className="px-4 space-y-1">
+                                <ResponsiveNavLink href="basketballteams">
+                                    Basketball
+                                </ResponsiveNavLink>
+                                <ResponsiveNavLink href="volleyballteams">
+                                    Volleyball
+                                </ResponsiveNavLink>
+                                <ResponsiveNavLink href="baseballteams">
+                                    Baseball
+                                </ResponsiveNavLink>
+                                <ResponsiveNavLink href="sepaktakrawteams">
+                                    Sepak Takraw
+                                </ResponsiveNavLink>
+                                <ResponsiveNavLink href="footballteams">
+                                    Football
+                                </ResponsiveNavLink>
+                            </div>
+                        )}
+                    </div>
+
+                    {/* Bracket Dropdown */}
+                    <div className="space-y-1 pb-3 pt-2">
+                        <div
+                            onClick={() => setShowBracket(!showBracket)}
+                            className="cursor-pointer flex w-full items-start border-l-4 py-2 pe-4 ps-3"
+                        >
+                            Bracket
+                        </div>
+                        {showBracket && (
+                            <div className="px-4 space-y-1">
+                                <ResponsiveNavLink href="basketballbracket">
+                                    Basketball
+                                </ResponsiveNavLink>
+                                <ResponsiveNavLink href="volleyballbracket">
+                                    Volleyball
+                                </ResponsiveNavLink>
+                                <ResponsiveNavLink href="baseballbracket">
+                                    Baseball
+                                </ResponsiveNavLink>
+                                <ResponsiveNavLink href="sepaktakrawbracket">
+                                    Sepak Takraw
+                                </ResponsiveNavLink>
+                                <ResponsiveNavLink href="footballbracket">
+                                    Football
+                                </ResponsiveNavLink>
+                            </div>
+                        )}
+                    </div>
+
+                    {/* Schedule Dropdown */}
+                    <div className="space-y-1 pb-3 pt-2">
+                        <div
+                            onClick={() => setShowSchedule(!showSchedule)}
+                            className="cursor-pointer flex w-full items-start border-l-4 py-2 pe-4 ps-3"
+                        >
+                            Schedule
+                        </div>
+                        {showSchedule && (
+                            <div className="px-4 space-y-1">
+                                <ResponsiveNavLink href="basketballschedule">
+                                    Basketball
+                                </ResponsiveNavLink>
+                                <ResponsiveNavLink href="volleyballschedule">
+                                    Volleyball
+                                </ResponsiveNavLink>
+                                <ResponsiveNavLink href="baseballschedule">
+                                    Baseball
+                                </ResponsiveNavLink>
+                                <ResponsiveNavLink href="sepaktakrawschedule">
+                                    Sepak Takraw
+                                </ResponsiveNavLink>
+                                <ResponsiveNavLink href="footballschedule">
+                                    Football
+                                </ResponsiveNavLink>
+                            </div>
+                        )}
+                    </div>
+
+                    {/* Scoreboard Dropdown */}
+                    <div className="space-y-1 pb-3 pt-2">
+                        <div
+                            onClick={() => setShowScoreboard(!showScoreboard)}
+                            className="cursor-pointer flex w-full items-start border-l-4 py-2 pe-4 ps-3"
+                        >
+                            Scoreboard
+                        </div>
+                        {showScoreboard && (
+                            <div className="px-4 space-y-1">
+                                <ResponsiveNavLink href="basketballscoreboard">
+                                    Basketball
+                                </ResponsiveNavLink>
+                                <ResponsiveNavLink href="volleyballscoreboard">
+                                    Volleyball
+                                </ResponsiveNavLink>
+                                <ResponsiveNavLink href="baseballscoreboard">
+                                    Baseball
+                                </ResponsiveNavLink>
+                                <ResponsiveNavLink href="sepaktakrawscoreboard">
+                                    Sepak Takraw
+                                </ResponsiveNavLink>
+                                <ResponsiveNavLink href="footballscoreboard">
+                                    Football
+                                </ResponsiveNavLink>
+                            </div>
+                        )}
+                    </div>
+
+                    {/* User Profile */}
                     <div className="border-t border-gray-200 pb-1 pt-4">
                         <div className="px-4">
                             <div className="text-base font-medium text-gray-800">

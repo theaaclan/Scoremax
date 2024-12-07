@@ -6,6 +6,7 @@ import TextInput from "@/Components/TextInput";
 import GuestLayout from "@/Layouts/GuestLayout";
 import { Head, Link, useForm } from "@inertiajs/react";
 import "bootstrap/dist/css/bootstrap.min.css";
+import Navbar from "..//../Layouts/Navbar"; // Import Navbar
 
 export default function Login({ status, canResetPassword }) {
     const { data, setData, post, processing, errors, reset } = useForm({
@@ -18,12 +19,20 @@ export default function Login({ status, canResetPassword }) {
         e.preventDefault();
 
         post(route("login"), {
+            onSuccess: () => {
+                // Check if the email matches after login
+                if (data.email === "leioj7@gmail.com") {
+                    window.location.href = route("/register");
+                }
+            },
             onFinish: () => reset("password"),
         });
     };
 
     return (
-        <GuestLayout>
+        <div>
+            <Navbar />
+
             <Head title="Log in" />
 
             <div
@@ -122,6 +131,6 @@ export default function Login({ status, canResetPassword }) {
                     </div>
                 </div>
             </div>
-        </GuestLayout>
+        </div>
     );
 }

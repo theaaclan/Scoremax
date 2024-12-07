@@ -1,120 +1,495 @@
+@font-face {
+    font-family: "Cursed Timer ULiL";
+    src: url("/resources/fonts/CursedTimerUlil-Aznm.ttf") format("truetype");
+    font-weight: normal;
+    font-style: normal;
+}
+
 /* Container styles */
 .scoreboard-container {
     display: flex;
-    justify-content: center;
+    flex-direction: column;
+    align-items: center;
     margin-top: 30px;
     padding: 20px;
+    background-color: whitesmoke; /* Light background color */
+    border-radius: 10px;
+    position: relative; /* Added for absolute positioning inside the container */
+    z-index: 0;
 }
 
-/* Scoreboard and tables layout */
-.scoreboard-and-tables {
+/* Scoreboard section styles */
+.scoreboard {
+    background-color: whitesmoke;
     display: flex;
-    align-items: center;
-    justify-content: center;
+    flex-direction: column;
     gap: 20px;
+    align-items: center;
+    margin-bottom: 30px;
     width: 100%;
 }
 
-/* Scoreboard left and right styles */
-.score-left,
-.score-right {
-    background-color: grey;
-    padding: 15px;
-    border-radius: 10px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    width: 15%;
-    text-align: center;
-    justify-content: center;
-}
-
-.score-left {
-    display: flex;
-    align-items: center;
-}
-
-/* Player boards */
-.player-board-left,
-.player-board-right {
-    flex: 1;
-    padding: 10px;
-}
-
-/* Timer container styles */
+/* Timer container */
 .timer-container {
     display: flex;
+    flex-direction: column; /* Stack the timer and button vertically */
     justify-content: center;
     align-items: center;
-    margin-bottom: -700px;
 }
 
-/* Timer button styles */
 .timer-button {
-    background-color: #4caf50;
+    background-color: red; /* Green color for the start button */
     color: white;
     border: none;
     padding: 10px 20px;
     cursor: pointer;
     font-size: 16px;
-    margin-right: 15px;
     border-radius: 5px;
+    transition: background-color 0.3s;
+}
+
+.timer-button:hover {
+    background-color: #e53935; /* Slightly darker green on hover */
 }
 
 .timer-button-pause {
-    background-color: #f44336;
+    background-color: #e53935; /* Red color for pause button */
 }
 
-/* Timer text styles */
+.timer-button-pause:hover {
+    background-color: #e53935; /* Slightly darker red on hover */
+}
+
 .timer {
-    font-size: 24px;
+    font-size: 60px;
     font-weight: bold;
-    color: #333;
+    text-align: center;
+    border: 3px solid red;
+    margin-top: 30px; /* Space between button and timer */
+    background: black;
+    outline: none;
+    width: 340px;
+    color: red;
+    font-family: "Cursed Timer ULiL";
 }
 
-/* Dropdown container and select styles */
-.dropdown-container {
-    margin-bottom: 20px;
+/* Score containers (left and right) */
+/* Score containers (left and right) */
+.scoreboard-scores {
+    display: flex;
+    justify-content: space-between; /* Space between left and right scores */
+    align-items: center;
+    width: 40%;
+    gap: 20px;
+    flex-wrap: nowrap; /* Prevent them from stacking unless on small screens */
 }
 
+.score-left,
+.score-right {
+    width: 200px; /* Adjust this value for desired width */
+    height: 240px; /* Adjust this value for desired height */
+    background-color: whitesmoke; /* Dark gray background */
+    color: white;
+    text-align: center;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    border: 2px solid red;
+}
+
+.score-left {
+    flex: 3;
+    margin-right: auto; /* Push to the left */
+}
+
+.score-right {
+    flex: 3;
+    margin-left: auto; /* Push to the right */
+}
+
+.score-left h3,
+.score-right h3 {
+    background-color: black;
+    font-size: 90px;
+    font-weight: bold;
+    color: #e70e0e; /* Warm color for the score text */
+    font-family: "Cursed Timer ULiL";
+    border: 2px solid red;
+}
+
+/* Dropdown container */
 .select {
     padding: 10px;
     font-size: 16px;
     border: 2px solid #ddd;
     border-radius: 5px;
     width: 100%;
-    background-color: #f9f9f9;
+    background-color: #3b3b3b;
+    margin-bottom: 10px;
+    transition: border-color 0.3s;
 }
 
-/* Score text style */
-.score-text {
-    font-size: 58px;
-    color: red;
-    font-weight: bold;
+.select:focus {
+    border-color: #4caf50; /* Green border when focused */
 }
 
-/* Players table styles */
+/* Player tables section */
+.player-tables-section {
+    margin-top: -60px;
+    display: flex;
+    justify-content: space-around;
+    flex-wrap: wrap;
+    gap: 0px;
+    width: 80%;
+}
+
+/* Table styling */
+
+.text-center {
+    margin-top: 100px;
+    text-align: center; /* Default centering */
+    font-size: 28px; /* Larger text size */
+    font-weight: bold; /* Make the text bold */
+    color: black; /* Green text color */
+    margin-bottom: 10px; /* Add space below the title */
+}
+
 .players-table {
+    margin-top: 10px;
     width: 100%;
-    margin: 20px 0;
     border-collapse: collapse;
+    background-color: #ffffff;
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
 }
 
-.players-table-header {
-    background-color: #f1f1f1;
-    font-weight: bold;
+/* Table header */
+.players-table th {
+    background-color: #4caf50; /* Green background for header */
+    color: white;
+    padding: 12px;
+    font-size: 18px;
 }
 
-.players-table-cell {
-    padding: 10px;
-    border: 1px solid #ddd;
-    text-align: left;
-}
-
-/* Input field styles */
-.input {
-    width: 60px;
-    padding: 5px;
-    font-size: 16px;
+/* Table rows */
+.players-table td {
+    padding: 12px;
     text-align: center;
-    border: 1px solid #ccc;
+    border: 1px solid #ddd;
+    font-size: 16px;
+}
+
+/* Table row hover effect */
+.players-table tbody tr:hover {
+    background-color: #f1f1f1; /* Light gray hover effect */
+}
+
+/* Buttons for stats (increment/decrement) */
+.button-counter button {
+    background-color: red;
+    padding: 5px 10px;
+    margin: 5px;
+    font-size: 14px;
     border-radius: 5px;
+    border: none;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.button-counter button:hover {
+    background-color: #ddd;
+}
+
+.set-buttons-a,
+.set-buttons-b {
+    position: relative;
+    top: 20px; /* Fixed from the top */
+    z-index: 10;
+    margin-bottom: -70px;
+}
+
+.set-buttons-a {
+    top: -180px;
+    right: 470px; /* Fixed distance from the left */
+}
+
+.set-buttons-b {
+    top: -180px;
+    left: 470px; /* Fixed distance from the right */
+}
+
+/* Timeout buttons */
+.timeoutA,
+.timeoutB {
+    position: relative;
+    top: 20px; /* Fixed from the top */
+    z-index: 10;
+    margin-bottom: -50px;
+    background-color: red;
+}
+
+.timeoutA {
+    top: -80px;
+    right: 260px; /* Fixed distance from the left */
+}
+
+.timeoutB {
+    top: -80px;
+    left: 260px; /* Fixed distance from the right */
+}
+
+.timeout-button {
+    padding: 10px 20px;
+    border-radius: 10px;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    display: block;
+    background-color: red;
+}
+
+.timeout-button:disabled {
+    background-color: #ccc;
+    cursor: not-allowed;
+}
+
+/* MVP Button */
+.mvp-section {
+    position: absolute;
+    top: 20px; /* Place at the top left */
+    left: 5px;
+    z-index: 10;
+    display: flex; /* Use flexbox to align items side by side */
+    align-items: center; /* Vertically align items */
+}
+
+.mvp-button {
+    background-color: #4caf50;
+    color: white;
+    font-size: 16px;
+    font-weight: bold;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    margin-right: 10px; /* Add space between the button and text */
+}
+
+.mvp-button:hover {
+    background-color: #45a049;
+}
+
+.mvp-text {
+    margin-top: 1px;
+    font-size: 17px;
+    color: white;
+    border: 2px solid #333; /* Add border around the text */
+    padding: 5px 10px; /* Padding inside the border */
+    border-radius: 5px; /* Slightly rounded corners */
+    background-color: #4caf50; /* Optional background color */
+}
+.period-box {
+    font-size: 15px; /* Large font size for visibility */
+    font-weight: bold; /* Makes the text bold */
+    color: white; /* Green text color */
+    text-align: center; /* Centers the text */
+    padding: 10px 20px; /* Adds padding inside the box */
+    background-color: red; /* White background for the box */
+    border-radius: 5px; /* Slightly rounded edges */
+    border: 2px solid red;
+}
+.submit-match-details {
+    position: absolute;
+    top: 80px;
+    left: 5px;
+}
+.gear {
+    position: absolute;
+    top: 50px;
+    left: 20px;
+}
+.clear {
+    position: absolute;
+    top: 130px;
+    left: 5px;
+}
+
+.submit-match-details-button {
+    font-size: 26px;
+    font-weight: bold;
+    padding: 10px 20px;
+    border: none;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.submit-match-details-button:hover {
+    background-color: #2563eb; /* Darker blue */
+}
+
+/* BASEBALL */
+
+/* Container styles */
+.container-style {
+    background-color: black;
+    color: white;
+    margin-top: -200px;
+    position: relative;
+    top: 495px;
+    right: 220px;
+    border: 2px solid red;
+}
+
+.container-style2 {
+    position: relative;
+    top: 425px;
+    left: 10px;
+    border: 2px solid red;
+    background-color: black;
+    color: white;
+}
+
+.container-style3 {
+    position: relative;
+    top: 350px;
+    left: 240px;
+    border: 2px solid red;
+    background-color: black;
+    color: white;
+}
+
+/* Label styles */
+.label-style {
+    font-size: 1.2rem;
+    font-weight: bold;
+    margin-bottom: 10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/* Checkbox group styles */
+.checkbox-group-style {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    margin-top: 10px;
+}
+
+/* Checkbox wrapper */
+.checkbox-wrapper-style {
+    position: relative;
+    width: 30px;
+    height: 30px;
+    display: inline-block;
+    cursor: pointer;
+}
+
+/* Hide default checkbox */
+.checkbox-style {
+    display: none; /* Hide the default checkbox */
+}
+
+/* Circle styles */
+.circle-style {
+    content: "";
+    width: 15px;
+    height: 15px;
+    background-color: yellow;
+    border-radius: 50%;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    opacity: 1; /* Visible when checked */
+}
+
+.circle-checked-style {
+    content: "";
+    width: 15px;
+    height: 15px;
+    background-color: red;
+    border-radius: 50%;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    opacity: 1; /* Visible when checked */
+}
+
+.circle-unchecked-style {
+    content: "";
+    width: 15px;
+    height: 15px;
+    background-color: red; /* Use the same background color as checked */
+    border-radius: 50%;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    opacity: 0; /* Hidden when not checked */
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .scoreboard-scores {
+        flex-direction: column;
+        gap: 25px;
+    }
+
+    .timeoutA,
+    .timeoutB {
+        top: auto;
+        bottom: 20px;
+        transform: none;
+    }
+
+    .timeoutA {
+        right: 190px;
+        top: -510px;
+    }
+
+    .timeoutB {
+        bottom: 510px;
+        left: 190px;
+    }
+
+    .mvp-section {
+        top: 20px;
+        left: 20px;
+    }
+
+    .player-tables-section {
+        flex-direction: column;
+        margin-left: -50px;
+    }
+    .period-box {
+        left: 20px;
+    }
+    .gear {
+        left: 10px;
+        top: 10px;
+    }
+
+    .submit-match-details,
+    .clear,
+    .mvp-section {
+        left: 10px;
+        right: 10px;
+        width: auto;
+    }
+
+    button {
+        font-size: 14px;
+        padding: 8px 16px;
+    }
+
+    .mvp-text {
+        font-size: 14px;
+    }
+    .score-left {
+        margin-left: 20px;
+    }
 }

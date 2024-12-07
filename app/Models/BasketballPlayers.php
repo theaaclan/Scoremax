@@ -20,21 +20,26 @@ class BasketballPlayers extends Model
         'Jersey_num',
         'TeamID',
         'TeamName',
-        'user_id',
+        'user_id', 'LeagueID'
     ];
+    public function league()
+    {
+        return $this->belongsTo(League::class, 'LeagueID');
+    }
 
     public function team()
     {
-        return $this->belongsTo(BasketballTeam::class, 'TeamID', 'TeamID');
+        return $this->belongsTo(BasketballTeam::class, 'TeamID');
     }
+    
 
     public function user()
     {
         return $this->belongsTo(User::class, 'user_id');
     }
 
-    public function matchDetails()
+    public function BasketballmatchDetails()
     {
-        return $this->hasMany(BasketballMatchDetails::class, 'player_id', 'PlayerID');
+        return $this->hasMany(BasketballMatchDetails::class, 'PlayerID', 'PlayerID');
     }
 }
