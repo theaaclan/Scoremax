@@ -1,15 +1,9 @@
 import React, { useState, useEffect } from "react";
 import { usePage } from "@inertiajs/react";
 import Swal from "sweetalert2"; // Import SweetAlert2
+import "@css/tournament.css";
 
 const styles = {
-    Container: {
-        display: "flex",
-        marginTop: "-70px",
-        marginLeft: "120px",
-        flexDirection: "row", // Keep it as a row
-        flexWrap: "wrap", // Allow wrapping if needed, but keep items in row
-    },
     Title: {
         fontSize: "32px", // Default size for larger screens
         fontWeight: "bold",
@@ -35,13 +29,7 @@ const styles = {
         display: "flex",
         marginTop: "240px",
     },
-    Branch_4: {
-        height: "150px",
-        width: "400px",
-        flexWrap: "wrap",
-        display: "flex",
-        marginTop: "275px",
-    },
+
     Object_1_even: {
         display: "grid",
         gridTemplateColumns: "230px 100px",
@@ -80,19 +68,6 @@ const styles = {
         cursor: "pointer",
         borderRadius: "4px",
         margin: "5px",
-    },
-    ClearButton: {
-        padding: "10px 20px",
-        backgroundColor: "#f44336",
-        color: "white",
-        border: "none",
-        cursor: "pointer",
-        borderRadius: "4px",
-        margin: "5px",
-        position: "absolute",
-        top: "100px",
-        left: "10px",
-        zIndex: 10,
     },
 };
 
@@ -282,8 +257,8 @@ const Bracket = () => {
     const branch4Matches = [{ id1: "Player15", id2: "", matchId: "Match8" }];
 
     return (
-        <div>
-            <div style={styles.Container}>
+        <div className="flex">
+            <div className="Container">
                 {/* Branch 1 */}
                 <div style={styles.Branch_1}>
                     <div style={styles.Title}> ELIMINATION</div>
@@ -327,7 +302,7 @@ const Bracket = () => {
                     ))}
                 </div>
 
-                <div style={styles.Branch_4}>
+                <div className="Branch_4">
                     <div style={styles.Title}>CHAMPION</div>
                     {branch4Matches.map((match) => (
                         <div style={styles.Object_1_odd} key={match.matchId}>
