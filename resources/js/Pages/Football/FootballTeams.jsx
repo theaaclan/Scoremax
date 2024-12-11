@@ -363,6 +363,7 @@ const FootballTeams = ({
         doc.save("MatchScores.pdf");
     };
 
+    
     return (
         <AuthenticatedLayout>
             <div className="container my-4">
