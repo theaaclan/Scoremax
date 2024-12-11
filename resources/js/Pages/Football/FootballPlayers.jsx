@@ -7,10 +7,6 @@ import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
 import axios from "axios";
 import "bootstrap/dist/css/bootstrap.min.css";
 import DataTable from "react-data-table-component";
-import { jsPDF } from "jspdf";
-import "jspdf-autotable";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faPrint } from "@fortawesome/free-solid-svg-icons";
 
 const FootballPlayers = ({ players: initialPlayers = [], teams, auth }) => {
     const [players, setPlayers] = useState(initialPlayers);
@@ -28,7 +24,7 @@ const FootballPlayers = ({ players: initialPlayers = [], teams, auth }) => {
     const [selectedPlayer, setSelectedPlayer] = useState(null);
     const [matchDetails, setMatchDetails] = useState([]);
     const modalRef = useRef(null);
-    const [filteredTeams, setFilteredTeams] = useState([]);
+
     const [activeLeague, setActiveLeague] = useState(
         JSON.parse(localStorage.getItem("activeLeague"))
     );
@@ -40,21 +36,6 @@ const FootballPlayers = ({ players: initialPlayers = [], teams, auth }) => {
             setActiveLeague(leagueData);
         }
     }, []);
-
-    useEffect(() => {
-        const activeLeague = JSON.parse(localStorage.getItem("activeLeague"));
-        if (activeLeague) {
-            const leagueId = activeLeague.LeagueID;
-
-            // Filter teams belonging to the active league
-            const leagueTeams = teams.filter(
-                (team) => team.LeagueID === leagueId
-            );
-            setFilteredTeams(leagueTeams);
-        } else {
-            console.warn("No active league found in local storage.");
-        }
-    }, [teams]);
 
     const resetForm = () => {
         setForm({
@@ -293,121 +274,6 @@ const FootballPlayers = ({ players: initialPlayers = [], teams, auth }) => {
         },
     ];
 
-    const exportToExcel = () => {
-        // Prepare the table data
-        const worksheetData = filteredPlayers.map((player) => ({
-            FullName: player.FullName,
-            Height: player.Height,
-            Weight: player.Weight,
-            Position: player.Position,
-            JerseyNumber: player.Jersey_num,
-            TeamName: player.TeamName || "N/A",
-        }));
-
-        // Create a new workbook and worksheet
-        const workbook = XLSX.utils.book_new();
-        const worksheet = XLSX.utils.json_to_sheet(worksheetData);
-
-        // Append the worksheet to the workbook
-        XLSX.utils.book_append_sheet(workbook, worksheet, "Players");
-
-        // Export the workbook as an Excel file
-        XLSX.writeFile(workbook, "Football_Players.xlsx");
-    };
-
-    const exportMatchDetailsToExcel = () => {
-        // Prepare the match details data
-        const matchDetailsData = matchDetails.map((match) => ({
-            PlayerName: match.PlayerName,
-            TeamName: match.TeamName,
-            Goals: match.Goals,
-            Assists: match.Assists,
-            YellowCard: match.YellowCard,
-            RedCard: match.RedCard,
-        }));
-
-        // Create a new workbook and worksheet
-        const workbook = XLSX.utils.book_new();
-        const worksheet = XLSX.utils.json_to_sheet(matchDetailsData);
-
-        // Append the worksheet to the workbook
-        XLSX.utils.book_append_sheet(workbook, worksheet, "Match Details");
-
-        // Export the workbook as an Excel file
-        XLSX.writeFile(workbook, "Match_Details.xlsx");
-    };
-
-    const columnsPlayers = [
-        { title: "Full Name", dataKey: "FullName" },
-        { title: "Height (m)", dataKey: "Height" },
-        { title: "Weight (kg)", dataKey: "Weight" },
-        { title: "Position", dataKey: "Position" },
-        { title: "Jersey #", dataKey: "Jersey_num" },
-        { title: "Team", dataKey: "TeamName" },
-    ];
-    const columnsMatchDetails = [
-        { title: "Player Name", dataKey: "PlayerName" },
-        { title: "Team Name", dataKey: "TeamName" },
-        { title: "Goals", dataKey: "Goals" },
-        { title: "Assists", dataKey: "Assists" },
-        { title: "YellowCard", dataKey: "YellowCard" },
-        { title: "RedCard", dataKey: "RedCard" },
-    ];
-
-    const handlePrintPlayersPDF = () => {
-        const doc = new jsPDF();
-
-        // Add title for players
-        doc.setFontSize(18);
-        doc.text("Football Players List", 14, 10); // Title
-
-        // Add players table
-        doc.setFontSize(12);
-        doc.autoTable({
-            startY: 20, // Start players table below the title
-            head: [columnsPlayers.map((col) => col.title)], // Players table headers
-            body: filteredPlayers.map((player) => [
-                player.FullName,
-                player.Height,
-                player.Weight,
-                player.Position,
-                player.Jersey_num,
-                player.TeamName || "N/A",
-            ]),
-            theme: "grid",
-        });
-
-        // Save the generated PDF with a name
-        doc.save("FootballPlayers.pdf");
-    };
-
-    const handlePrintMatchDetailsPDF = () => {
-        const doc = new jsPDF();
-
-        // Add title for match details
-        doc.setFontSize(18);
-        doc.text("Match Details", 14, 10); // Title
-
-        // Add match details table
-        doc.setFontSize(12);
-        doc.autoTable({
-            startY: 20, // Start match details table below the title
-            head: [columnsMatchDetails.map((col) => col.title)], // Match details table headers
-            body: matchDetails.map((match) => [
-                match.PlayerName,
-                match.TeamName,
-                match.Goals,
-                match.Assists,
-                match.YellowCard,
-                match.RedCard,
-            ]),
-            theme: "grid",
-        });
-
-        // Save the generated PDF with a name
-        doc.save("MatchDetails.pdf");
-    };
-
     return (
         <AuthenticatedLayout>
             <div className="container my-4">
@@ -426,22 +292,6 @@ const FootballPlayers = ({ players: initialPlayers = [], teams, auth }) => {
                 >
                     Player History
                 </button>
-                <div className="mb-3">
-                    <button
-                        className="btn btn-secondary mb-3"
-                        onClick={exportToExcel}
-                    >
-                        <FontAwesomeIcon icon={faPrint} className="me-2" />
-                        Print Excel
-                    </button>
-                    <button
-                        className="btn btn-secondary mb-3 ms-2 "
-                        onClick={handlePrintPlayersPDF}
-                    >
-                        <FontAwesomeIcon icon={faPrint} className="me-2" />
-                        Print PDF
-                    </button>
-                </div>
 
                 <div className="mb-3">
                     <input
@@ -519,7 +369,7 @@ const FootballPlayers = ({ players: initialPlayers = [], teams, auth }) => {
                                                 <option value="">
                                                     Select a Team
                                                 </option>
-                                                {filteredTeams.map((team) => (
+                                                {teams.map((team) => (
                                                     <option
                                                         key={team.TeamID}
                                                         value={team.TeamID}
@@ -617,32 +467,6 @@ const FootballPlayers = ({ players: initialPlayers = [], teams, auth }) => {
                                     </div>
                                     <div className="modal-body">
                                         {/* Dropdown and Text Input */}
-                                        <div className="mb-3">
-                                            <button
-                                                className="btn btn-secondary mb-3"
-                                                onClick={
-                                                    exportMatchDetailsToExcel
-                                                }
-                                            >
-                                                <FontAwesomeIcon
-                                                    icon={faPrint}
-                                                    className="me-2"
-                                                />
-                                                Print Excel
-                                            </button>
-                                            <button
-                                                className="btn btn-secondary mb-3 ms-2 "
-                                                onClick={
-                                                    handlePrintMatchDetailsPDF
-                                                }
-                                            >
-                                                <FontAwesomeIcon
-                                                    icon={faPrint}
-                                                    className="me-2"
-                                                />
-                                                Print PDF
-                                            </button>
-                                        </div>
                                         <div className="d-flex align-items-center mb-3">
                                             <select
                                                 className="form-select me-3"
@@ -696,3 +520,10 @@ const FootballPlayers = ({ players: initialPlayers = [], teams, auth }) => {
 };
 
 export default FootballPlayers;
+
+
+
+
+
+
+
